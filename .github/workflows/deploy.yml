@@ -1,0 +1,40 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "[INFO] Cloning latest code..."
+            rm -rf dbi-server
+            git clone https://github.com/harshpx/dbi-server.git
+            cd dbi-server
+            echo "[INFO] Importing classification model..."
+            curl -L "https://github.com/harshpx/dbi-server/releases/download/Model/dbi_model.zip" -o models/dbi_model.zip
+            unzip models/dbi_model.zip -d models/dbi_model
+
+            echo "[INFO] Performing an existing docker container cleanup..."
+            docker stop dbi-server || true
+            docker rm -f dbi-server || true
+
+            echo "[INFO] Building dbi-server..."
+            docker build -t dbi-server .
+
+            echo "[INFO] Starting dbi-server container..."
+            docker run -d \
+              --name dbi-server \
+              -p 8080:8080 dbi-server
+
+            echo "[INFO] Deployment complete."
