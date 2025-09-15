@@ -13,3 +13,8 @@ target/
 
 ### VS Code ###
 .vscode/
+
+# Ignore everything in models folder
+/models/*
+# But allow .zip files
+!/models/*.zip
