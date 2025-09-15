@@ -35,6 +35,7 @@ jobs:
             echo "[INFO] Starting dbi-server container..."
             docker run -d \
               --name dbi-server \
+              -e MODEL_PATH=/app/models/dbi_model \
               -p 8080:8080 dbi-server
 
             echo "[INFO] Deployment complete."
