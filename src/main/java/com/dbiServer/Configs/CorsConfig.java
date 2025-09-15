@@ -13,7 +13,7 @@ public class CorsConfig {
       @Override
       public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOrigins("https://dbi-client.vercel.app", "https://dog-breed-identifier.vercel.app",
+            .allowedOrigins("https://dbi-client.vercel.app", "https://dog-breed-identifier-client.vercel.app",
                 "http://localhost:5173")
             .allowedMethods("GET", "POST")
             .allowedHeaders("*")
