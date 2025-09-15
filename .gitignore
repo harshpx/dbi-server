@@ -18,3 +18,4 @@ target/
 /models/*
 # But allow .zip files
 !/models/*.zip
+!/models/.gitkeep
