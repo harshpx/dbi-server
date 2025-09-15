@@ -1,0 +1,39 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "[INFO] Stopping the running service..."
+            sudo systemctl stop dbi-server
+
+            echo "[INFO] Cloning latest code..."
+            rm -rf dbi-server
+            git clone https://github.com/harshpx/dbi-server.git
+            cd dbi-server
+
+            echo "[INFO] Fetching & loading the model..."
+            curl -L "https://github.com/harshpx/dbi-server/releases/download/Model/dbi_model.zip" -o ./models/dbi_model.zip
+            unzip -o ./models/dbi_model.zip -d ./models/dbi_model
+
+            echo "[INFO] Building the project..."
+            mvn clean package -DskipTests
+            cp -r ./target/*.jar ./app.jar
+
+            echo "[INFO] Starting service..."
+            sudo systemctl start dbi-server
+
+            echo "[INFO] Deployment complete."
