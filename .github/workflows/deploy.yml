@@ -26,7 +26,7 @@ jobs:
             cd dbi-server
 
             echo "[INFO] Fetching & loading the model..."
-            curl -L "https://github.com/harshpx/dbi-server/releases/download/Model/dbi_model.zip" -o ./models/dbi_model.zip
+            curl -L "https://github.com/harshpx/dbi-server/releases/download/v1.1/dbi_model.zip" -o ./models/dbi_model.zip
             unzip -o ./models/dbi_model.zip -d ./models/dbi_model
 
             echo "[INFO] Building the project..."
