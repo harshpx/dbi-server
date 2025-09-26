@@ -30,6 +30,7 @@ jobs:
             unzip -o ./models/dbi_model.zip -d ./models/dbi_model
 
             echo "[INFO] Building the project..."
+            rm -rf ./target ./app.jar
             mvn clean package -DskipTests
             cp -r ./target/*.jar ./app.jar
 

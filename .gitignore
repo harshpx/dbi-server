@@ -17,5 +17,4 @@ target/
 # Ignore everything in models folder
 /models/*
 # But allow .zip files
-!/models/*.zip
 !/models/.gitkeep
