@@ -26,11 +26,10 @@ jobs:
             cd dbi-server
 
             echo "[INFO] Fetching & loading the model..."
-            curl -L "https://github.com/harshpx/dbi-server/releases/download/v1.1/dbi_model.zip" -o ./models/dbi_model.zip
-            unzip -o ./models/dbi_model.zip -d ./models/dbi_model
+            chmod +x ./update_model.sh
+            ./update_model.sh "https://github.com/harshpx/dbi-server/releases/download/Model/dbi_model.zip"
 
             echo "[INFO] Building the project..."
-            rm -rf ./target ./app.jar
             mvn clean package -DskipTests
             cp -r ./target/*.jar ./app.jar
 

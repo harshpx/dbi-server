@@ -82,7 +82,9 @@ public class PredictionService {
       "n02115641-dingo", "n02115913-dhole", "n02116738-African_hunting_dog"
   };
 
-  private static final String INPUT_TENSOR = "serving_default_keras_tensor_311:0";
+  // private static final String INPUT_TENSOR =
+  // "serving_default_keras_tensor_311:0"; // for v1.1 tag
+  private static final String INPUT_TENSOR = "serving_default_keras_tensor_313:0"; // for Model tag
   private static final String OUTPUT_TENSOR = "StatefulPartitionedCall_1:0";
 
   public PredictionResult predictFromUrl(String url) throws IOException {
