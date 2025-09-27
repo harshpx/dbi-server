@@ -13,6 +13,7 @@ import org.tensorflow.types.TFloat32;
 
 import com.dbiServer.DTOs.PredictionResult;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -108,7 +109,11 @@ public class PredictionService {
   private TFloat32 processImageToTensor(BufferedImage img) {
     // Resize to 224x224
     BufferedImage resizedImg = new BufferedImage(224, 224, BufferedImage.TYPE_INT_RGB);
-    resizedImg.getGraphics().drawImage(img, 0, 0, 224, 224, null);
+    Graphics2D graphic = resizedImg.createGraphics();
+    graphic.drawImage(img, 0, 0, 224, 224, null);
+    graphic.dispose();
+    // Alternatively
+    // resizedImg.getGraphics().drawImage(img, 0, 0, 224, 224, null);
 
     // Convert to float array and normalize
     float[][][][] inputData = new float[1][224][224][3];
@@ -119,9 +124,9 @@ public class PredictionService {
         int g = (rgb >> 8) & 0xFF; // extract green
         int b = (rgb) & 0xFF; // extract blue
         // normalize to [0,1] range
-        inputData[0][y][x][0] = r / 255.0f;
-        inputData[0][y][x][1] = g / 255.0f;
-        inputData[0][y][x][2] = b / 255.0f;
+        inputData[0][y][x][0] = (r / 127.5f) - 1.0f;
+        inputData[0][y][x][1] = (g / 127.5f) - 1.0f;
+        inputData[0][y][x][2] = (b / 127.5f) - 1.0f;
       }
     }
     return TFloat32.tensorOf(StdArrays.ndCopyOf(inputData));
